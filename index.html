@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eid Mubarak - Syafrina dan Keluarga</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .card-wrapper {
+    position: relative;
+    width: min(100vw, 100vh * (16/9));
+    height: min(100vh, 100vw * (9/16));
+    max-width: 1280px;
+    max-height: 720px;
+    overflow: hidden;
+  }
+
+  /* Original image as background - EXACT design preserved */
+  .bg-image {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  /* Soft ambient glow pulse */
+  .ambient-glow {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 65% 35%, rgba(255,255,255,0.06) 0%, transparent 50%);
+    animation: ambientPulse 5s ease-in-out infinite;
+  }
+  @keyframes ambientPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* Moon glow */
+  .moon-glow {
+    position: absolute;
+    top: 10%;
+    right: 28%;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,245,200,0.25) 0%, rgba(255,245,200,0.08) 40%, transparent 70%);
+    z-index: 2;
+    pointer-events: none;
+    animation: moonGlow 4s ease-in-out infinite;
+  }
+  @keyframes moonGlow {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.35); opacity: 1; }
+  }
+
+  /* Twinkling stars */
+  .twinkle-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 55%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .twinkle-star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    box-shadow: 0 0 3px #fff, 0 0 6px rgba(200,230,255,0.5);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Firework bursts */
+  .firework-burst {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .firework-burst .ray {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 2px;
+    height: var(--ray-len, 30px);
+    background: linear-gradient(to top, transparent, var(--ray-color, rgba(255,255,255,0.9)));
+    transform-origin: bottom center;
+    transform: rotate(var(--angle)) translateY(-50%);
+    animation: rayBurst var(--burst-dur, 3s) ease-out infinite;
+    animation-delay: var(--burst-delay, 0s);
+    opacity: 0;
+    border-radius: 1px;
+  }
+  @keyframes rayBurst {
+    0% { opacity: 0; height: 0; }
+    10% { opacity: 0; }
+    15% { opacity: 1; height: var(--ray-len, 30px); }
+    40% { opacity: 0.8; }
+    70% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  .firework-burst .dot {
+    position: absolute;
+    width: var(--dot-size, 3px);
+    height: var(--dot-size, 3px);
+    background: var(--ray-color, #fff);
+    border-radius: 50%;
+    box-shadow: 0 0 4px var(--ray-color, #fff);
+    animation: dotBurst var(--burst-dur, 3s) ease-out infinite;
+    animation-delay: var(--burst-delay, 0s);
+    opacity: 0;
+  }
+  @keyframes dotBurst {
+    0% { opacity: 0; transform: translate(0,0) scale(0); }
+    15% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
+    40% { opacity: 0.8; transform: translate(var(--dx), var(--dy)) scale(1); }
+    70% { opacity: 0; transform: translate(calc(var(--dx) * 1.2), calc(var(--dy) * 1.3)) scale(0.3); }
+    100% { opacity: 0; }
+  }
+
+  /* Shimmer sweep on text */
+  .text-shimmer {
+    position: absolute;
+    top: 25%;
+    right: 3%;
+    width: 45%;
+    height: 35%;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .text-shimmer::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg,
+      transparent 30%,
+      rgba(255,255,255,0.04) 40%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(255,255,255,0.04) 60%,
+      transparent 70%
+    );
+    animation: shimmerMove 6s ease-in-out infinite;
+  }
+  @keyframes shimmerMove {
+    0% { transform: translateX(-100%) translateY(-100%); }
+    100% { transform: translateX(100%) translateY(100%); }
+  }
+
+  /* Greeting text */
+  .greeting-overlay {
+    position: absolute;
+    bottom: 3.5%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    padding: 0 8%;
+    opacity: 0;
+    animation: greetingFadeIn 2.5s 1s ease-out forwards;
+  }
+  @keyframes greetingFadeIn {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .greeting-text {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: clamp(13px, 2.2vw, 22px);
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6);
+    line-height: 1.6;
+  }
+  .greeting-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(11px, 1.8vw, 18px);
+    color: #f0e6c0;
+    letter-spacing: 4px;
+    margin-top: 6px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    animation: nameGlow 3s ease-in-out infinite;
+  }
+  @keyframes nameGlow {
+    0%, 100% { text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5); }
+    50% { text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 30px rgba(240,230,192,0.4); }
+  }
+
+  /* Light rays */
+  .light-rays {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    animation: raysAppear 3s 0.5s ease-out forwards;
+  }
+  @keyframes raysAppear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .light-ray {
+    position: absolute;
+    top: -5%;
+    width: 2px;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+    transform-origin: top center;
+    animation: rayDrift 8s ease-in-out infinite;
+  }
+  @keyframes rayDrift {
+    0%, 100% { opacity: 0.3; transform: rotate(var(--ray-rot, 0deg)); }
+    50% { opacity: 0.6; transform: rotate(calc(var(--ray-rot, 0deg) + 2deg)); }
+  }
+
+  /* Golden dust */
+  .golden-dust {
+    position: absolute;
+    background: rgba(240,230,180,0.8);
+    border-radius: 50%;
+    z-index: 5;
+    pointer-events: none;
+    animation: dustFloat var(--dust-dur) ease-in-out infinite;
+    animation-delay: var(--dust-delay);
+    box-shadow: 0 0 3px rgba(240,230,180,0.5);
+  }
+  @keyframes dustFloat {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    20% { opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(var(--dust-dy, -80px)) translateX(var(--dust-dx, 20px)); }
+  }
+
+  /* Sparkle animation */
+  @keyframes sparkleAnim {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    30% { opacity: 1; transform: scale(1.2) rotate(90deg); }
+    70% { opacity: 0.8; transform: scale(1) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0) rotate(360deg); }
+  }
+
+  /* Vignette */
+  .vignette {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 6;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.12) 100%);
+  }
+</style>
+</head>
+<body>
+
+<div class="card-wrapper" id="card">
+  <!-- ORIGINAL IMAGE — design stays 100% the same -->
+  <img src="eid-bg.jpeg" class="bg-image" alt="Eid Mubarak">
+
+  <!-- Animated overlays -->
+  <div class="ambient-glow"></div>
+  <div class="moon-glow"></div>
+  <div class="twinkle-layer" id="twinkleLayer"></div>
+  <div id="fireworksLayer"></div>
+  <div class="text-shimmer"></div>
+  <div class="light-rays" id="lightRays"></div>
+  <div id="sparkleLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:4;pointer-events:none;"></div>
+  <div class="vignette"></div>
+
+  <!-- Greeting -->
+  <div class="greeting-overlay">
+    <div class="greeting-text">Minal 'Aidin wal-Faizin, Mohon Maaf Lahir dan Batin</div>
+    <div class="greeting-name">— Syafrina dan Keluarga —</div>
+  </div>
+</div>
+
+<script>
+// Twinkling stars
+const twinkleLayer = document.getElementById('twinkleLayer');
+const starPositions = [
+  {x:5,y:10},{x:12,y:5},{x:8,y:25},{x:18,y:15},{x:25,y:8},{x:32,y:20},
+  {x:15,y:35},{x:22,y:42},{x:38,y:10},{x:42,y:25},{x:48,y:5},{x:35,y:35},
+  {x:55,y:8},{x:62,y:15},{x:70,y:5},{x:78,y:12},{x:85,y:8},{x:90,y:18},
+  {x:95,y:5},{x:58,y:30},{x:3,y:45},{x:28,y:48},{x:88,y:25},{x:75,y:20},
+];
+starPositions.forEach(pos => {
+  const s = document.createElement('div');
+  s.className = 'twinkle-star';
+  const sz = 1.5 + Math.random() * 2.5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;left:${pos.x}%;top:${pos.y}%;--dur:${2.5+Math.random()*3}s;--delay:${Math.random()*5}s;`;
+  twinkleLayer.appendChild(s);
+});
+
+// Firework bursts
+const fwLayer = document.getElementById('fireworksLayer');
+const fws = [
+  {x:'10%',y:'8%',delay:0,dur:4,rays:14,len:35,color:'rgba(220,240,255,0.8)'},
+  {x:'28%',y:'12%',delay:1.2,dur:4.5,rays:12,len:28,color:'rgba(180,220,240,0.7)'},
+  {x:'18%',y:'22%',delay:2.5,dur:5,rays:10,len:22,color:'rgba(200,230,250,0.6)'},
+  {x:'72%',y:'5%',delay:0.6,dur:3.8,rays:16,len:40,color:'rgba(255,255,255,0.85)'},
+  {x:'88%',y:'10%',delay:2,dur:4.2,rays:12,len:30,color:'rgba(200,230,250,0.7)'},
+  {x:'50%',y:'6%',delay:3,dur:5,rays:10,len:25,color:'rgba(220,240,255,0.6)'},
+  {x:'5%',y:'15%',delay:1.8,dur:4,rays:8,len:20,color:'rgba(180,210,240,0.5)'},
+];
+fws.forEach(cfg => {
+  const b = document.createElement('div');
+  b.className = 'firework-burst';
+  b.style.left = cfg.x; b.style.top = cfg.y;
+  for (let i = 0; i < cfg.rays; i++) {
+    const angle = (360/cfg.rays)*i;
+    const ray = document.createElement('div');
+    ray.className = 'ray';
+    const len = cfg.len*(0.7+Math.random()*0.6);
+    ray.style.cssText = `--angle:${angle}deg;--ray-len:${len}px;--ray-color:${cfg.color};--burst-dur:${cfg.dur}s;--burst-delay:${cfg.delay}s;`;
+    b.appendChild(ray);
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    const dist = len+5;
+    const dx = Math.cos(angle*Math.PI/180)*dist;
+    const dy = Math.sin(angle*Math.PI/180)*dist;
+    dot.style.cssText = `--dx:${dx}px;--dy:${dy}px;--dot-size:${2+Math.random()*2}px;--ray-color:${cfg.color};--burst-dur:${cfg.dur}s;--burst-delay:${cfg.delay}s;left:50%;top:50%;`;
+    b.appendChild(dot);
+  }
+  fwLayer.appendChild(b);
+});
+
+// Light rays
+const lr = document.getElementById('lightRays');
+for (let i = 0; i < 6; i++) {
+  const r = document.createElement('div');
+  r.className = 'light-ray';
+  r.style.cssText = `left:${15+i*15}%;--ray-rot:${-10+i*4}deg;opacity:${0.1+Math.random()*0.15};animation-delay:${i*0.3}s;`;
+  lr.appendChild(r);
+}
+
+// Golden dust particles
+const card = document.getElementById('card');
+function spawnDust() {
+  const d = document.createElement('div');
+  d.className = 'golden-dust';
+  d.style.cssText = `left:${30+Math.random()*60}%;top:${20+Math.random()*50}%;--dust-dur:${3+Math.random()*4}s;--dust-delay:0s;--dust-dy:${-40-Math.random()*60}px;--dust-dx:${-20+Math.random()*40}px;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;`;
+  card.appendChild(d);
+  setTimeout(() => d.remove(), 7000);
+}
+setInterval(spawnDust, 300);
+
+// Floating sparkles
+const spLayer = document.getElementById('sparkleLayer');
+function spawnSparkle() {
+  const sp = document.createElement('div');
+  const sz = 1+Math.random()*3;
+  sp.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*60}%;width:${sz}px;height:${sz}px;background:rgba(255,255,255,0.9);border-radius:50%;box-shadow:0 0 ${sz*2}px rgba(255,255,255,0.6);animation:sparkleAnim ${2+Math.random()*2}s ease-in-out forwards;pointer-events:none;`;
+  spLayer.appendChild(sp);
+  setTimeout(() => sp.remove(), 4500);
+}
+setInterval(spawnSparkle, 600);
+</script>
+</body>
+</html>
