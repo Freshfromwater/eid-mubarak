@@ -2,214 +2,442 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Eid Mubarak - Syafrina dan Keluarga</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+
   body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Cormorant Garamond', serif;
   }
 
   .card {
     position: relative;
+    overflow: hidden;
+    /* Desktop: landscape 16:9 */
     width: 100vw;
-    height: 56.25vw; /* 16:9 */
+    height: 56.25vw;
     max-width: 1280px;
     max-height: 720px;
-    overflow: hidden;
   }
 
-  /* === ORIGINAL IMAGE === */
   .bg {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     z-index: 0;
   }
 
-  /* === 1. GENTLE MOON GLOW — soft breathing light === */
+  .fx-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Moon glow */
   .moon-glow {
     position: absolute;
-    top: 6%;
-    right: 26%;
-    width: 100px;
-    height: 100px;
+    top: 5%;
+    right: 25.5%;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     background: radial-gradient(circle,
-      rgba(255,248,220,0.18) 0%,
-      rgba(255,248,220,0.06) 50%,
-      transparent 75%
+      rgba(255,248,215,0.2) 0%,
+      rgba(255,248,215,0.07) 45%,
+      transparent 72%
     );
     z-index: 1;
     pointer-events: none;
-    animation: breathe 6s ease-in-out infinite;
+    animation: moonBreath 5s ease-in-out infinite;
   }
-  @keyframes breathe {
+  @keyframes moonBreath {
     0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.25); opacity: 0.85; }
+    50% { transform: scale(1.3); opacity: 0.9; }
   }
 
-  /* === 2. STARS — only tiny subtle twinkles === */
-  .star {
-    position: absolute;
-    width: var(--s);
-    height: var(--s);
-    background: #fff;
-    border-radius: 50%;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
-    animation: softTwinkle var(--d) ease-in-out infinite;
-    animation-delay: var(--dl);
-  }
-  @keyframes softTwinkle {
-    0%, 100% { opacity: 0; }
-    50% { opacity: var(--peak, 0.8); }
-  }
-
-  /* === 3. VERY SOFT LIGHT SWEEP — like moonlight moving === */
+  /* Light sweep */
   .light-sweep {
     position: absolute;
     inset: 0;
-    z-index: 2;
+    z-index: 1;
     pointer-events: none;
     overflow: hidden;
   }
   .light-sweep::after {
     content: '';
     position: absolute;
-    top: -20%;
-    left: -60%;
-    width: 40%;
-    height: 140%;
-    background: linear-gradient(
-      105deg,
+    top: -20%; left: -60%;
+    width: 35%; height: 140%;
+    background: linear-gradient(105deg,
       transparent 0%,
-      rgba(255,255,255,0.02) 45%,
-      rgba(255,255,255,0.04) 50%,
-      rgba(255,255,255,0.02) 55%,
+      rgba(255,255,255,0.015) 44%,
+      rgba(255,255,255,0.035) 50%,
+      rgba(255,255,255,0.015) 56%,
       transparent 100%
     );
-    animation: sweep 10s ease-in-out infinite;
+    animation: sweep 12s ease-in-out infinite;
   }
   @keyframes sweep {
     0%   { left: -60%; }
     100% { left: 160%; }
   }
 
-  /* === 4. GREETING TEXT === */
+  /* Greeting */
   .greeting {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 0; left: 0;
     width: 100%;
     text-align: center;
     z-index: 10;
-    padding: 20px 10% 16px;
-    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, transparent 100%);
+    padding: 24px 8% 18px;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
     opacity: 0;
-    animation: fadeUp 2s 0.5s ease-out forwards;
+    animation: fadeUp 2.5s 0.8s ease-out forwards;
   }
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .greeting-line1 {
+  .g1 {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: clamp(14px, 2.4vw, 24px);
+    font-size: 22px;
     color: #fff;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.7);
     line-height: 1.5;
-    letter-spacing: 0.5px;
   }
-  .greeting-line2 {
+  .g2 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 600;
-    font-size: clamp(11px, 1.6vw, 16px);
+    font-size: 14px;
     color: #ede4c5;
     letter-spacing: 5px;
     text-transform: uppercase;
     margin-top: 8px;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.7);
   }
 
-  /* === 5. SUBTLE VIGNETTE === */
+  /* Vignette */
   .vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.15) 100%);
+    position: absolute; inset: 0;
+    z-index: 3; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.18) 100%);
+  }
+
+  /* ====== MOBILE PORTRAIT ====== */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .card {
+      /* Full screen on mobile portrait */
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh; /* dynamic viewport for mobile browsers */
+      max-width: none;
+      max-height: none;
+    }
+    .bg {
+      /* Ensure image covers the taller portrait view */
+      object-fit: cover;
+      object-position: center center;
+    }
+    .moon-glow {
+      width: 70px;
+      height: 70px;
+      top: 8%;
+      right: 20%;
+    }
+    .greeting {
+      padding: 20px 6% 24px;
+      /* Push up a bit from bottom for phone nav bars */
+      bottom: 0;
+    }
+    .g1 {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .g2 {
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-top: 6px;
+    }
+  }
+
+  /* Very small phones */
+  @media (max-width: 380px) and (orientation: portrait) {
+    .g1 { font-size: 14px; }
+    .g2 { font-size: 10px; letter-spacing: 2px; }
+  }
+
+  /* ====== MOBILE LANDSCAPE ====== */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .card {
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      max-height: none;
+    }
+    .greeting {
+      padding: 12px 10% 10px;
+    }
+    .g1 { font-size: 15px; }
+    .g2 { font-size: 10px; letter-spacing: 3px; margin-top: 4px; }
+  }
+
+  /* ====== TABLET ====== */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .g1 { font-size: 20px; }
+    .g2 { font-size: 13px; }
   }
 </style>
 </head>
 <body>
 
 <div class="card" id="card">
-  <!-- Original design — untouched -->
   <img src="eid-bg.jpeg" class="bg" alt="Eid Mubarak">
-
-  <!-- Gentle moon glow -->
   <div class="moon-glow"></div>
-
-  <!-- Soft light sweep -->
   <div class="light-sweep"></div>
-
-  <!-- Vignette -->
+  <canvas class="fx-canvas" id="fx"></canvas>
   <div class="vignette"></div>
-
-  <!-- Greeting -->
   <div class="greeting">
-    <div class="greeting-line1">Minal 'Aidin wal-Faizin, Mohon Maaf Lahir dan Batin</div>
-    <div class="greeting-line2">— Syafrina dan Keluarga —</div>
+    <div class="g1">Minal 'Aidin wal-Faizin, Mohon Maaf Lahir dan Batin</div>
+    <div class="g2">— Syafrina dan Keluarga —</div>
   </div>
 </div>
 
 <script>
-// Generate subtle twinkling stars — only in the sky area
+const canvas = document.getElementById('fx');
+const ctx = canvas.getContext('2d');
 const card = document.getElementById('card');
-const stars = [
-  // Top-left sky area
-  {x:4,y:8},{x:9,y:3},{x:14,y:18},{x:7,y:28},{x:20,y:10},
-  {x:26,y:22},{x:33,y:6},{x:30,y:30},{x:16,y:40},
-  // Top-center
-  {x:40,y:4},{x:45,y:16},{x:50,y:8},{x:38,y:28},
-  // Top-right (less dense — text area)
-  {x:60,y:6},{x:68,y:3},{x:75,y:14},{x:82,y:6},
-  {x:88,y:12},{x:92,y:4},{x:95,y:18},
-  // Extra subtle ones
-  {x:11,y:36},{x:22,y:44},{x:55,y:22},{x:65,y:18},
-];
 
-stars.forEach(pos => {
-  const el = document.createElement('div');
-  el.className = 'star';
-  const size = (1 + Math.random() * 2).toFixed(1);
-  const dur = (4 + Math.random() * 5).toFixed(1);
-  const delay = (Math.random() * 8).toFixed(1);
-  const peak = (0.4 + Math.random() * 0.5).toFixed(2);
-  el.style.cssText = `
-    left:${pos.x}%;
-    top:${pos.y}%;
-    --s:${size}px;
-    --d:${dur}s;
-    --dl:${delay}s;
-    --peak:${peak};
-  `;
-  card.appendChild(el);
-});
+function resize() {
+  canvas.width = card.offsetWidth;
+  canvas.height = card.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const W = () => canvas.width;
+const H = () => canvas.height;
+
+// ─── STARS ───
+class Star {
+  constructor() {
+    this.x = Math.random();
+    this.y = Math.random() * 0.5;
+    this.size = 0.8 + Math.random() * 1.8;
+    this.speed = 0.3 + Math.random() * 0.5;
+    this.phase = Math.random() * Math.PI * 2;
+    this.brightness = 0.3 + Math.random() * 0.7;
+  }
+  draw(t) {
+    const alpha = (Math.sin(t * this.speed + this.phase) * 0.5 + 0.5) * this.brightness;
+    if (alpha < 0.05) return;
+    const x = this.x * W();
+    const y = this.y * H();
+    ctx.beginPath();
+    ctx.arc(x, y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+    if (alpha > 0.4) {
+      ctx.beginPath();
+      ctx.arc(x, y, this.size * 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,225,255,${alpha * 0.12})`;
+      ctx.fill();
+    }
+  }
+}
+
+// ─── GOLDEN DUST ───
+class Dust {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = 0.25 + Math.random() * 0.6;
+    this.y = 0.15 + Math.random() * 0.55;
+    this.size = 0.5 + Math.random() * 1.5;
+    this.vx = (Math.random() - 0.5) * 0.00015;
+    this.vy = -0.00008 - Math.random() * 0.00015;
+    this.life = 0;
+    this.maxLife = 300 + Math.random() * 400;
+    this.gold = Math.random() > 0.4;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    if (this.life > this.maxLife) this.reset();
+  }
+  draw() {
+    const p = this.life / this.maxLife;
+    let alpha;
+    if (p < 0.15) alpha = p / 0.15;
+    else if (p > 0.7) alpha = (1 - p) / 0.3;
+    else alpha = 1;
+    alpha *= 0.6;
+    if (alpha < 0.01) return;
+    const x = this.x * W();
+    const y = this.y * H();
+    const c = this.gold
+      ? `rgba(240,225,170,${alpha})`
+      : `rgba(220,240,255,${alpha * 0.7})`;
+    ctx.beginPath();
+    ctx.arc(x, y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = c;
+    ctx.fill();
+    if (alpha > 0.2) {
+      ctx.beginPath();
+      ctx.arc(x, y, this.size * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = this.gold
+        ? `rgba(240,225,170,${alpha * 0.08})`
+        : `rgba(200,230,255,${alpha * 0.06})`;
+      ctx.fill();
+    }
+  }
+}
+
+// ─── FIREWORK SPARKLES ───
+class Firework {
+  constructor() { this.reset(); this.delay = Math.random() * 500; }
+  reset() {
+    this.cx = 0.05 + Math.random() * 0.9;
+    this.cy = 0.03 + Math.random() * 0.35;
+    this.particles = [];
+    const count = 12 + Math.floor(Math.random() * 16);
+    const hue = Math.random() > 0.5 ? 200 : 45;
+    const sat = 20 + Math.random() * 30;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.3;
+      const speed = 0.0003 + Math.random() * 0.0006;
+      this.particles.push({
+        angle, speed,
+        dist: 0,
+        maxDist: 0.02 + Math.random() * 0.035,
+        size: 0.6 + Math.random() * 1,
+        hue, sat,
+        light: 75 + Math.random() * 20,
+      });
+    }
+    this.life = 0;
+    this.maxLife = 120 + Math.random() * 100;
+    this.delay = 100 + Math.random() * 600;
+  }
+  update() {
+    if (this.delay > 0) { this.delay--; return; }
+    this.life++;
+    if (this.life > this.maxLife) { this.reset(); return; }
+    this.particles.forEach(p => {
+      const mp = Math.min(1, this.life / (this.maxLife * 0.5));
+      p.dist = p.maxDist * (1 - Math.pow(1 - mp, 3));
+    });
+  }
+  draw() {
+    if (this.delay > 0) return;
+    const p = this.life / this.maxLife;
+    let alpha;
+    if (p < 0.08) alpha = p / 0.08;
+    else alpha = Math.max(0, 1 - (p - 0.3) / 0.7);
+    if (alpha < 0.01) return;
+    this.particles.forEach(pt => {
+      const x = (this.cx + Math.cos(pt.angle) * pt.dist) * W();
+      const y = (this.cy + Math.sin(pt.angle) * pt.dist) * H();
+      ctx.beginPath();
+      ctx.arc(x, y, pt.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${pt.hue},${pt.sat}%,${pt.light}%,${alpha * 0.85})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, y, pt.size * 4, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${pt.hue},${pt.sat}%,${pt.light}%,${alpha * 0.08})`;
+      ctx.fill();
+    });
+    if (p < 0.15) {
+      const fa = (1 - p / 0.15) * 0.3;
+      ctx.beginPath();
+      ctx.arc(this.cx * W(), this.cy * H(), 8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${fa})`;
+      ctx.fill();
+    }
+  }
+}
+
+// ─── SHOOTING STAR ───
+class ShootingStar {
+  constructor() { this.reset(); this.delay = 200 + Math.random() * 800; }
+  reset() {
+    this.x = Math.random() * 0.6;
+    this.y = Math.random() * 0.25;
+    this.len = 0.06 + Math.random() * 0.08;
+    this.angle = 0.3 + Math.random() * 0.5;
+    this.speed = 0.003 + Math.random() * 0.003;
+    this.life = 0;
+    this.maxLife = 40 + Math.random() * 30;
+    this.delay = 500 + Math.random() * 1500;
+  }
+  update() {
+    if (this.delay > 0) { this.delay--; return; }
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+    this.life++;
+    if (this.life > this.maxLife) this.reset();
+  }
+  draw() {
+    if (this.delay > 0) return;
+    const p = this.life / this.maxLife;
+    let alpha;
+    if (p < 0.2) alpha = p / 0.2;
+    else alpha = 1 - (p - 0.2) / 0.8;
+    if (alpha < 0.01) return;
+    const x1 = this.x * W();
+    const y1 = this.y * H();
+    const x2 = (this.x - Math.cos(this.angle) * this.len) * W();
+    const y2 = (this.y - Math.sin(this.angle) * this.len) * H();
+    const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+    grad.addColorStop(0, `rgba(255,255,255,${alpha * 0.9})`);
+    grad.addColorStop(1, `rgba(255,255,255,0)`);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x1, y1, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha * 0.7})`;
+    ctx.fill();
+  }
+}
+
+// ─── CREATE ───
+const stars = Array.from({ length: 35 }, () => new Star());
+const dusts = Array.from({ length: 40 }, () => new Dust());
+const fireworks = Array.from({ length: 5 }, () => new Firework());
+const shootingStars = Array.from({ length: 2 }, () => new ShootingStar());
+dusts.forEach(d => { d.life = Math.floor(Math.random() * d.maxLife); });
+
+// ─── LOOP ───
+let t = 0;
+function animate() {
+  ctx.clearRect(0, 0, W(), H());
+  t += 0.016;
+  stars.forEach(s => s.draw(t));
+  fireworks.forEach(f => { f.update(); f.draw(); });
+  dusts.forEach(d => { d.update(); d.draw(); });
+  shootingStars.forEach(s => { s.update(); s.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
 </body>
 </html>
